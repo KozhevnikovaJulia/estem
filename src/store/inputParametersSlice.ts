@@ -16,6 +16,7 @@ export type InputParametersStateType = {
   currentNameFromAttributesSaveNamesArr: string;
   selectCategorySearchParam: string;
   selectCategorySearchParam2: string;
+  selectCategorySearchParamMedia: string;
   selectCategorySearchText: string;
   media: Array<ItemType>;
   exportFormat: Array<ItemType>;
@@ -37,6 +38,7 @@ const initialState: InputParametersStateType = {
   currentNameFromAttributesSaveNamesArr: 'fff',
   selectCategorySearchParam: 'name',
   selectCategorySearchParam2: 'Рекламодатель',
+  selectCategorySearchParamMedia: 'ТВ',
   selectCategorySearchText: '',
   media: [
     { name: 'ТВ Федеральное', isChecked: true },
@@ -195,6 +197,9 @@ const inputParametersSlice = createSlice({
     setSelectCategorySearchParam2(state, action: PayloadAction<string>) {
       state.selectCategorySearchParam2 = action.payload;
     },
+    setSelectCategorySearchParamMedia(state, action: PayloadAction<string>) {
+      state.selectCategorySearchParamMedia = action.payload;
+    },
     setSelectCategorySearchText(state, action: PayloadAction<string>) {
       state.selectCategorySearchText = action.payload;
     },
@@ -204,6 +209,6 @@ const inputParametersSlice = createSlice({
   },
 });
 
-export const { setSelectCategorySearchParam, setSelectCategorySearchParam2, setSelectCategorySearchText, setDataForExportXLS, setMainAttribute, setAttributeText, setAttributesSaveNamesArr, setCurrentNameFromAttributesSaveNamesArr, setMedia, setExportFormat, setEstimation, setMonthNum, setShortLists, setAggregation, setConditionType, setLanguage, setDateStart, setDateEnd, setSelectedConditions } = inputParametersSlice.actions;
+export const { setSelectCategorySearchParamMedia, setSelectCategorySearchParam, setSelectCategorySearchParam2, setSelectCategorySearchText, setDataForExportXLS, setMainAttribute, setAttributeText, setAttributesSaveNamesArr, setCurrentNameFromAttributesSaveNamesArr, setMedia, setExportFormat, setEstimation, setMonthNum, setShortLists, setAggregation, setConditionType, setLanguage, setDateStart, setDateEnd, setSelectedConditions } = inputParametersSlice.actions;
 
 export default inputParametersSlice.reducer;

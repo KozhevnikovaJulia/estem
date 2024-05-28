@@ -7,7 +7,7 @@ import { MainButton } from '../common/MainButton/MainButton';
 import { OtherButton } from '../common/OtherButton/OtherButton';
 import { TextArea } from '../common/TextArea/TextArea';
 import { changeCase } from '../../../helpers/helpers';
-import { setSelectedConditions, setSelectCategorySearchParam, setSelectCategorySearchParam2, setSelectCategorySearchText } from '../../../store/inputParametersSlice';
+import { setSelectCategorySearchParamMedia, setSelectedConditions, setSelectCategorySearchParam, setSelectCategorySearchParam2, setSelectCategorySearchText } from '../../../store/inputParametersSlice';
 import { attributesArr } from '../../../assets/data/data';
 
 type SelectCategoryPropsType = {
@@ -22,10 +22,9 @@ export const SelectCategory = React.memo(({ modalActive, setModalActive, paramet
   const selectCategorySearchParam = useAppSelector(state => state.input.selectCategorySearchParam);
   const selectCategorySearchParam2 = useAppSelector(state => state.input.selectCategorySearchParam2);
   const selectCategorySearchText = useAppSelector(state => state.input.selectCategorySearchText);
+  const selectCategorySearchParamMedia = useAppSelector(state => state.input.selectCategorySearchParamMedia);
 
-  const [attributeNameForMedia, setAttributeNameForMedia] = useState<string>('ТВ');
-
-  const currentAttrMedia = attributesArr.find(item => item.mainAttrute === parameter && item.attributeNameForMedia === attributeNameForMedia);
+  const currentAttrMedia = attributesArr.find(item => item.mainAttrute === parameter && item.attributeNameForMedia === selectCategorySearchParamMedia);
   const currentAttrNotMedia = attributesArr.find(item => item.mainAttrute === parameter);
   const currentAttrArr = parameter === 'СМИ' ? currentAttrMedia && currentAttrMedia.attributes : currentAttrNotMedia && currentAttrNotMedia.attributes;
 
@@ -47,6 +46,9 @@ export const SelectCategory = React.memo(({ modalActive, setModalActive, paramet
   };
   const onChangeSearchParam2 = (newValue: string) => {
     dispatch(setSelectCategorySearchParam2(newValue));
+  };
+  const onChangeSelectCategorySearchParamMedia = (newValue: string) => {
+    dispatch(setSelectCategorySearchParamMedia(newValue));
   };
 
   return (
@@ -70,6 +72,14 @@ export const SelectCategory = React.memo(({ modalActive, setModalActive, paramet
             <div className={s.filterBlock}>
               <div className={s.selectWrap1}>
                 <Select items={['Рекламодатель', 'Бренд', 'Суб-бренд', 'Продукт']} value={selectCategorySearchParam2} onChange={onChangeSearchParam2} name='searchParam2' widthSelect={'100%'} />
+              </div>
+            </div>
+          )}
+
+          {parameter === 'СМИ' && (
+            <div className={s.filterBlock}>
+              <div className={s.selectWrap1}>
+                <Select items={['ТВ', 'Радио', 'Пресса', 'ООН', 'Интернет']} value={selectCategorySearchParamMedia} onChange={onChangeSelectCategorySearchParamMedia} name='selectCategorySearchParamMedia' widthSelect={'100%'} />
               </div>
             </div>
           )}
