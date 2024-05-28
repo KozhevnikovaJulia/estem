@@ -1,0 +1,28 @@
+.stepButton {
+  background-color: grey;
+  height: 50px;
+  width: 100px;
+  border: 2px solid grey;
+  color: white;
+  border-radius: 8px;
+  white-space: pre;
+  line-height: 10px;
+  box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 40%);
+  position: relative;
+}
+.stepButton:hover {
+  background-color: #ab2424;
+  border-color: #a02222;
+  box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 40%);
+}
+.stepButton:disabled {
+  background-color: #c4c4c4;
+  border-color: #c4c4c4;
+}
+.childrenWrap {
+  width: 10%;
+  display: flex;
+  justify-content: start;
+  position: absolute;
+  top: 10px;
+}

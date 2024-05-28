@@ -1,0 +1,85 @@
+.progressWrapper {
+  background-color: rgba(250, 250, 250, 0.4);
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  opacity: 1;
+  pointer-events: all;
+  z-index: 1000;
+}
+.meter {
+  box-sizing: content-box;
+  height: 7px;
+  position: relative;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 100500;
+}
+.meter > span {
+  display: block;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.meter > span:after,
+.animate > span > span {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-image: linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-size: 1rem 1rem;
+  animation: move 2s linear infinite;
+  overflow: hidden;
+}
+
+.animate > span:after {
+  display: none;
+}
+
+@keyframes move {
+  100% {
+    background-position: 0 0;
+  }
+  0% {
+    background-position: 1rem 1rem;
+  }
+}
+
+.red > span {
+  background-image: linear-gradient(#f0a3a3, #f42323);
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.loadingSpinner {
+  width: 70px;
+  height: 70px;
+  border: 10px solid white;
+  border-top: 10px solid #d32f2f;
+  border-right: 10px solid #d32f2f;
+  border-left: 10px solid #d32f2f;
+  border-radius: 50%;
+  animation: spinner 1s linear infinite;
+}
+
+.spinnerContainer {
+  position: fixed;
+  top: 45%;
+  left: 45%;
+}
