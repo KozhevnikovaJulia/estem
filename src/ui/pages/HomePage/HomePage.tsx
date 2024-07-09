@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '../../../utils/redux_ulils';
 import s from './HomePage.module.css';
 import { Header2 } from '../../components/Header2/Header2';
@@ -13,8 +13,8 @@ import { SelectCategory } from '../../components/SelectCategory/SelectCategory';
 import { Period } from '../../components/Period/Period';
 import { Media } from '../../components/Media/Media';
 import { Template } from '../../components/Template/Template';
-import { setAttributeText, setEstimation, setMonthNum, setShortLists, setAggregation, setExportFormat, setConditionType, setLanguage } from '../../../store/inputParametersSlice';
-
+import { setSelectedConditions, setAttributeText, setEstimation, setMonthNum, setShortLists, setAggregation, setExportFormat, setConditionType, setLanguage } from '../../../store/inputParametersSlice';
+import { setDataFromSearchAdvertiser, setDataFromSearchArticle } from '../../../store/dataFromBackSlice';
 import { onChangeCheckBoxInParametersArrOneSelect } from '../../../helpers/helpers';
 
 export const HomePage = React.memo(() => {
@@ -30,32 +30,53 @@ export const HomePage = React.memo(() => {
   const [modalTemplateActive, setModalTemplateActive] = useState<boolean>(false);
 
   const [wornCondVisible, setWornCondVisible] = useState<boolean>(false);
-  const [quesVisible, setQuesVisible] = useState<boolean>(false);
+  const [wornAddLinkingOperatorVisible, setWornAddLinkingOperatorVisible] = useState<boolean>(false);
 
   const attributeText = useAppSelector(state => state.input.attributeText);
-
   const exportFormat = useAppSelector(state => state.input.exportFormat);
-
   const estimation = useAppSelector(state => state.input.estimation);
   const monthNum = useAppSelector(state => state.input.monthNum);
   const shortLists = useAppSelector(state => state.input.shortLists);
   const aggregation = useAppSelector(state => state.input.aggregation);
-
   const conditionType = useAppSelector(state => state.input.conditionType);
   const language = useAppSelector(state => state.input.language);
 
   const dispatch = useAppDispatch();
-
-  const innerRef = useRef(null);
+  const innerRef = React.createRef<HTMLInputElement>();
 
   const onChangeAttributeText = (e: any) => {
     dispatch(setAttributeText(e));
   };
 
-  const onClickAttrParameter = (parameter: string) => {
-    setModalCategoryActive(true);
-    setCurrentParameter(parameter);
+  const onClickAttrParameter = (parameter: string, fromWornCard: boolean) => {
+    if (fromWornCard || attributeText === '') {
+      setModalCategoryActive(true);
+      setCurrentParameter(parameter);
+      dispatch(setDataFromSearchAdvertiser({ Рекламодатель: [], Бренд: [], 'Суб-бренд': [], Продукт: [] }));
+      dispatch(setDataFromSearchArticle({ Article1: [], Article2: [], Article3: [], Article4: [] }));
+      dispatch(setSelectedConditions(''));
+    } else {
+      setCurrentParameter(parameter);
+      setWornAddLinkingOperatorVisible(true);
+    }
   };
+
+  const onClickTextInputBlockBtn = (symbol: string) => {
+    const arr = attributeText.split('');
+    arr.splice(currentPos, 0, ` ${symbol} `.toUpperCase());
+    const newAttributeText = arr.join('');
+    dispatch(setAttributeText(newAttributeText));
+    setCurrentPos(currentPos + ` ${symbol} `.length);
+
+    setTimeout(() => {
+      innerRef.current && innerRef.current.focus();
+    }, 100);
+  };
+
+  useEffect(() => {
+    innerRef.current !== null && innerRef.current.focus();
+    setCurrentPos(attributeText.length);
+  }, [attributeText]);
 
   return (
     <>
@@ -82,7 +103,7 @@ export const HomePage = React.memo(() => {
               <div className={s.btnWrapStandart}>
                 <OtherButton
                   onClick={() => {
-                    onClickAttrParameter('Рекламодатели->Продукты');
+                    onClickAttrParameter('Рекламодатели->Продукты', false);
                   }}
                   title={'Рекламодатели->Продукты'}
                   widthBtn={'100%'}
@@ -93,7 +114,7 @@ export const HomePage = React.memo(() => {
               <div className={s.btnWrapStandart}>
                 <OtherButton
                   onClick={() => {
-                    onClickAttrParameter('Категирии 1->4');
+                    onClickAttrParameter('Категирии 1->4', false);
                   }}
                   title={'Категирии 1->4'}
                   widthBtn={'100%'}
@@ -106,7 +127,7 @@ export const HomePage = React.memo(() => {
             <div className={s.btnWrapStandart}>
               <OtherButton
                 onClick={() => {
-                  onClickAttrParameter('СМИ');
+                  onClickAttrParameter('СМИ', false);
                 }}
                 title={'СМИ'}
                 widthBtn={'100%'}
@@ -129,22 +150,58 @@ export const HomePage = React.memo(() => {
             <div className={s.mediaBlockTitle}>Настройки отчета</div>
             <div className={s.btnsBlock}>
               <div className={s.btnsWrap}>
-                <OtherButton onClick={() => {}} title={'('} widthBtn={'100%'} />
+                <OtherButton
+                  onClick={() => {
+                    onClickTextInputBlockBtn('(');
+                  }}
+                  title={'('}
+                  widthBtn={'100%'}
+                />
               </div>
               <div className={s.btnsWrap}>
-                <OtherButton onClick={() => {}} title={')'} widthBtn={'100%'} />
+                <OtherButton
+                  onClick={() => {
+                    onClickTextInputBlockBtn(')');
+                  }}
+                  title={')'}
+                  widthBtn={'100%'}
+                />
               </div>
               <div className={s.btnsWrap}>
-                <OtherButton onClick={() => {}} title={'AND'} widthBtn={'100%'} />
+                <OtherButton
+                  onClick={() => {
+                    onClickTextInputBlockBtn('AND');
+                  }}
+                  title={'AND'}
+                  widthBtn={'100%'}
+                />
               </div>
               <div className={s.btnsWrap}>
-                <OtherButton onClick={() => {}} title={'OR'} widthBtn={'100%'} />
+                <OtherButton
+                  onClick={() => {
+                    onClickTextInputBlockBtn('OR');
+                  }}
+                  title={'OR'}
+                  widthBtn={'100%'}
+                />
               </div>
               <div className={s.btnsWrap}>
-                <OtherButton onClick={() => {}} title={'NOT'} widthBtn={'100%'} />
+                <OtherButton
+                  onClick={() => {
+                    onClickTextInputBlockBtn('NOT');
+                  }}
+                  title={'NOT'}
+                  widthBtn={'100%'}
+                />
               </div>
               <div className={s.btnsWrap}>
-                <OtherButton onClick={() => {}} title={'<-'} widthBtn={'100%'} />
+                <OtherButton
+                  onClick={() => {
+                    onClickTextInputBlockBtn('<-');
+                  }}
+                  title={'<-'}
+                  widthBtn={'100%'}
+                />
               </div>
             </div>
             <TextArea name={'attributeText'} value={attributeText} onChange={onChangeAttributeText} currentPos={currentPos} setCurrentPos={setCurrentPos} innerRef={innerRef} widthTextArea={'90%'} />
@@ -331,14 +388,15 @@ export const HomePage = React.memo(() => {
       {modalTemplateActive && <Template modalActive={modalTemplateActive} setModalActive={setModalTemplateActive} />}
       {<Warning text={'Условия выборки не заданы'} warningVisible={wornCondVisible} setWarningVisible={setWornCondVisible} />}
       {
-        <Warning text={'Сохранить условия?'} warningVisible={quesVisible} setWarningVisible={setQuesVisible} isQuestion>
-          <div className={s.btns}>
-            <div className={s.btnWrap}>
-              <OtherButton onClick={() => {}} title={'Да'} widthBtn={'100%'} />
-            </div>
-            <div className={s.btnWrap}>
-              <OtherButton onClick={() => {}} title={'Нет'} widthBtn={'100%'} />
-            </div>
+        <Warning text={'Перед добавлением нового условия не забудьте добавить связующий оператор (OR или AND)'} warningVisible={wornAddLinkingOperatorVisible} setWarningVisible={setWornAddLinkingOperatorVisible}>
+          <div className={s.btnWrapStandart}>
+            <OtherButton
+              onClick={() => {
+                onClickAttrParameter(currentParameter, true);
+              }}
+              title={'Ок'}
+              widthBtn={'100%'}
+            />
           </div>
         </Warning>
       }

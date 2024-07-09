@@ -4,3 +4,10 @@
   display: flex;
   justify-content: center;
 }
+
+.selected {
+  background-color: rgba(230, 38, 20, 0.4) !important;
+}
+.oldSelected {
+  background-color: rgba(128, 128, 128, 0.585) !important;
+}

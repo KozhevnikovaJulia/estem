@@ -1,11 +1,18 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { API } from '../dal/api';
-import { setError, setStatus, setInfo, AppStateType } from './appSlice';
-import { AxiosError } from 'axios';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type ItemType = {
   name: string;
   isChecked: boolean;
+};
+
+export type ItemselectCategorySearchTextType = {
+  parameter: string;
+  text: string;
+};
+
+export type ItemSelectedConditions = {
+  parameter: string;
+  textArr: Array<string>;
 };
 
 export type InputParametersStateType = {
@@ -17,7 +24,7 @@ export type InputParametersStateType = {
   selectCategorySearchParam: string;
   selectCategorySearchParam2: string;
   selectCategorySearchParamMedia: string;
-  selectCategorySearchText: string;
+  selectCategorySearchText: Array<ItemselectCategorySearchTextType>;
   media: Array<ItemType>;
   exportFormat: Array<ItemType>;
   estimation: Array<ItemType>;
@@ -39,7 +46,11 @@ const initialState: InputParametersStateType = {
   selectCategorySearchParam: 'name',
   selectCategorySearchParam2: 'Рекламодатель',
   selectCategorySearchParamMedia: 'ТВ',
-  selectCategorySearchText: '',
+  selectCategorySearchText: [
+    { parameter: 'Рекламодатели->Продукты', text: '' },
+    { parameter: 'Категирии 1->4', text: '' },
+    { parameter: 'СМИ', text: '' },
+  ],
   media: [
     { name: 'ТВ Федеральное', isChecked: true },
     { name: 'ТВ Региональное', isChecked: true },
@@ -200,12 +211,9 @@ const inputParametersSlice = createSlice({
     setSelectCategorySearchParamMedia(state, action: PayloadAction<string>) {
       state.selectCategorySearchParamMedia = action.payload;
     },
-    setSelectCategorySearchText(state, action: PayloadAction<string>) {
+    setSelectCategorySearchText(state, action: PayloadAction<Array<ItemselectCategorySearchTextType>>) {
       state.selectCategorySearchText = action.payload;
     },
-  },
-  extraReducers: builder => {
-    // builder.addCase(setStartData.pending, state => {}).addCase(setStartData.fulfilled, (state, action) => {});
   },
 });
 

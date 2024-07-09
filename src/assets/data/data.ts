@@ -1,14 +1,3 @@
-// export type attributesArrItem = {
-//   mainAttrute: string;
-//   attributes: Array<string>;
-// };
-// export const attributesArr: Array<attributesArrItem> = [
-//   { mainAttrute: 'Товары/услуги', attributes: ['Рекламодатели', 'Бренды', 'Суб-бренды', 'Модели', 'Категиории'] },
-//   { mainAttrute: 'ТВ', attributes: ['Национальная\n телекомпания', 'Регион/\n телекомпания', 'Телекомпания\n оригинала'] },
-//   { mainAttrute: 'Радио', attributes: ['Холдинг', 'Радиостанция', 'Радиостанция\n оригинального\n выпуска'] },
-//   { mainAttrute: 'Пресса', attributes: ['Издательский\n дом', 'Издание'] },
-//   { mainAttrute: 'ООН', attributes: ['Агенство', 'Тип носителя'] },
-// ];
 export type attributesArrItem = {
   mainAttrute: string;
   attributeNameForMedia?: string;

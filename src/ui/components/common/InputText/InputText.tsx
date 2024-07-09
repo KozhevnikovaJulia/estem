@@ -5,7 +5,7 @@ type DefaultInputPropsType = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElem
 
 type InputTextPropsType = DefaultInputPropsType & {
   // и + ещё пропсы которых нет в стандартном инпуте
-  value: string;
+  value: string | undefined;
   onChange: ChangeEventHandler<HTMLTextAreaElement> & ((value: string) => void);
   name: string;
   widthInputText?: number | string;
@@ -18,7 +18,7 @@ export const InputText = React.memo(({ value, onChange, name, widthInputText, ..
     setTitle(e.currentTarget.value);
   };
   const saveNewValueInState = () => {
-    onChange(title);
+    title && onChange(title);
   };
 
   useEffect(() => {
